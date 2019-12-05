@@ -1,0 +1,28 @@
+apply plugin: 'com.android.application'
+android {
+    def versions = rootProject.ext.versions
+    compileSdkVersion versions.compileVersion
+    buildToolsVersion versions.buildToolVersion
+    defaultConfig {
+        multiDexEnabled = true
+        applicationId versions.applicationId
+        minSdkVersion versions.minSdkVersion
+        targetSdkVersion versions.targetSdkVersion
+        versionCode versions.versionCode
+        versionName versions.versionName
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    dependencies {
+        def dependencies = rootProject.ext.deps
+        implementation fileTree(include: ['*.jar'], dir: 'libs')
+        implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+        testImplementation dependencies.junit
+        androidTestImplementation dependencies.test
+        androidTestImplementation(dependencies.testEspresso) {
+            exclude group: 'com.android.support', module: 'support-annotations'
+        }
+        // V7包
+        compile dependencies.appcompat
+    }
+}
